@@ -51,12 +51,17 @@ class BinarySearchTree{
 
    
    
-   /*
-   in-order traversal
-   */
-   public void inOrderTraversal(Node root){
-      //implement me
-   }
+   /**
+     * This recursive method traverses the binary tree and prints out a list of all values "In-order"
+     * @param root The node at which the traversal will start.
+     */
+    public void inOrderTraversal(Node root) {
+        if (root==null)
+            return;
+        inOrderTraversal(root.left);
+        System.out.println(root+ ", ");
+        inOrderTraversal(root.right);
+    }
    
    
    
