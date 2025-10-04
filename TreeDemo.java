@@ -65,12 +65,17 @@ class BinarySearchTree{
    
    
    
-   /*
-   post-order traversal
-   */
-   public void postOrderTraversal(Node root){
-      //implement me
-   }
+   /**
+     * This recursive method traverses the binary tree and prints out a list of all values in "Post-order"
+     * @param root The node at which the traversal will start.
+     */
+    public void postOrderTraversal(Node root) {
+        if (root==null)
+            return;
+        inOrderTraversal(root.left);
+        inOrderTraversal(root.right);
+        System.out.println(root+ ", ");
+    }
    
    
    
