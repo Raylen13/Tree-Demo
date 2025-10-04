@@ -79,14 +79,19 @@ class BinarySearchTree{
    
    
    
-   /*
-   a method to find the node in the tree
-   with a specific value
-   */
-   public boolean find(Node root, int key){
-	  //implement me
-      return false;           
-   }
+   /**
+     * This recursive method will search the binary tree for a node with the same value as the key given.
+     * @param root The node at which the search will start.
+     * @param key The value that is being searched for.
+     * @return True if a node with the specified value was found and false if not.
+     */
+    public boolean find(Node root, int key) {
+        if (root==null)
+            return false;
+        if (root.value==key)
+            return true;
+        return ( find(root.left, key) || find(root.right, key) );
+    }
    
    
    
