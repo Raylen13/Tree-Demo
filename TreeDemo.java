@@ -37,12 +37,17 @@ class BinarySearchTree{
    
    
    
-   /*
-   pre-order traversal
-   */
-   public void preOrderTraversal(Node root){
-      //implement me
-   }
+   /**
+     * This recursive method traverses the binary tree and prints out a list of all values in "Pre-order"
+     * @param root The node at which the traversal will start.
+     */
+    public void preOrderTraversal(Node root) {
+        if (root==null)
+            return;
+        System.out.println(root+ ", ");
+        preOrderTraversal(root.left);
+        preOrderTraversal(root.right);
+    }
 
    
    
