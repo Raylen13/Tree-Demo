@@ -109,13 +109,17 @@ class BinarySearchTree{
   
   
   
-   /*
-   a method to find the node in the tree
-   with a largest key
-   */
-   public int getMax(Node root){
-	  //implement me
-   }
+   /**
+     * This recursive method will return the node in the binary tree with the largest value.
+     * Also known as the right most node.
+     * @param root The node at which the search will start.
+     * @return The node with the largest value in the binary tree.
+     */
+    public int getMax(Node root) {
+        if (root.right==null)
+            return root.value;
+        return getMax(root.right);
+    }
    
    
    
