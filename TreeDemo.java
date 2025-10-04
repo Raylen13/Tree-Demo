@@ -95,13 +95,17 @@ class BinarySearchTree{
    
    
    
-   /*
-   a method to find the node in the tree
-   with a smallest key
-   */
-   public int getMin(Node root){
-      //implement me
-   }
+   /**
+     * This recursive method will return the node in the binary tree with the smallest value.
+     * Also known as the left most node.
+     * @param root The node at which the search will start.
+     * @return The node with the smallest value in the binary tree.
+     */
+    public int getMin(Node root) {
+        if (root.left==null)
+            return root.value;
+        return getMin(root.left);
+    }
   
   
   
