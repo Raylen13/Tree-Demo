@@ -15,25 +15,50 @@ class BinarySearchTree{
    Node root;
    
    
-   /*
-   recursive insert method
-   */
-   public Node insert(Node root, int value){
-      //base case
-      if(root == null){
-         root = new Node(value);
-         return root;
-      }
-      
-      //recursive step
-      if(value < root.value){
-         root.left = insert(root.left, value); 
-      }else{
-         root.right = insert(root.right, value);
-      }
-      
-      return root;
-   }
+   /**
+     * Inserts the given value into the binary tree.
+     * For the sake of proper recursion, the root of the tree must also be given as a parameter.
+     * @param root The root node of the tree that will gain a new value.
+     * @param value The value that will be added to the binary tree.
+     * @return The node that has been added to the tree.
+     */
+    public Node insert(Node root, int value){
+
+        // Checking if the root of the tree is null.
+        // This check should only succeed if the root of the whole tree is null.
+        if(root == null){
+            this.root = new Node(value);
+            return root;
+        }
+
+        // Value is less than current node.
+        if(value < root.value){
+
+            // Less than base case.
+            if (root.left == null)
+                root.left = new Node(value);
+
+            // Less than recursive step.
+            else
+                insert(root.left, value);
+
+        }
+
+        // Value is greater than current node.
+        else{
+
+            // Greater than base case.
+            if (root.right == null)
+                root.right = new Node(value);
+
+            // Greater than recursive step.
+            else
+                insert(root.right, value);
+        }
+
+        // Return statement. It is unclear why it is necessary for this method to return anything.
+        return root;
+    }
    
    
    
