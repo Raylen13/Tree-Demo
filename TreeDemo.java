@@ -188,18 +188,41 @@ class BinarySearchTree{
 
 public class TreeDemo{
    public static void main(String[] args){
-      BinarySearchTree t1  = new BinarySearchTree();
-      t1.insert(24);
-      t1.insert(80);
-      t1.insert(18);
-      t1.insert(9);
-      t1.insert(90);
-      t1.insert(22);
-            
-      System.out.print("in-order :   ");
-      t1.inOrderTraversal(t1.root);
-      System.out.println();
-           
-      
-   }  
+
+        BinarySearchTree t1  = new BinarySearchTree();
+        t1.insert(t1.root, 24);
+        t1.insert(t1.root, 80);
+        t1.insert(t1.root, 18);
+        t1.insert(t1.root, 9);
+        t1.insert(t1.root, 90);
+        t1.insert(t1.root, 22);
+
+        System.out.print("pre-order :   ");
+        t1.preOrderTraversal(t1.root);
+        System.out.println();
+
+        System.out.print("in-order :   ");
+        t1.inOrderTraversal(t1.root);
+        System.out.println();
+
+        System.out.print("post-order :   ");
+        t1.postOrderTraversal(t1.root);
+        System.out.println();
+
+        System.out.print("smallest node : " + t1.getMin(t1.root));
+        System.out.println();
+
+        System.out.print("largest node : " + t1.getMax(t1.root));
+        System.out.println();
+
+        t1.delete(t1.root, 22);
+        System.out.print("in-order after deleting 22 :   ");
+        t1.inOrderTraversal(t1.root);
+        System.out.println();
+
+        t1.delete(t1.root, 90);
+        System.out.print("in-order after deleting 90 :   ");
+        t1.inOrderTraversal(t1.root);
+        System.out.println();
+    }
 }
