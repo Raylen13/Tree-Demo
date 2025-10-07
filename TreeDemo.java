@@ -77,7 +77,7 @@ class BinarySearchTree{
     public void preOrderTraversal(Node root) {
         if (root==null)
             return;
-        System.out.println(root+ ", ");
+        System.out.print(root+ ", ");
         preOrderTraversal(root.left);
         preOrderTraversal(root.right);
     }
@@ -92,7 +92,7 @@ class BinarySearchTree{
         if (root==null)
             return;
         inOrderTraversal(root.left);
-        System.out.println(root+ ", ");
+        System.out.print(root+ ", ");
         inOrderTraversal(root.right);
     }
    
@@ -107,7 +107,7 @@ class BinarySearchTree{
             return;
         inOrderTraversal(root.left);
         inOrderTraversal(root.right);
-        System.out.println(root+ ", ");
+        System.out.print(root+ ", ");
     }
    
    
