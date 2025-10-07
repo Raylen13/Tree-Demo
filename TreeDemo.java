@@ -8,6 +8,14 @@ class Node{
       right = null;
    }
 
+    /**
+     * Returns a string containing the value of the node and nothing else.
+     * @return A string containing the value of the node.
+     */
+    public String toString() {
+        return ""+value;
+    }
+
 }
 
 class BinarySearchTree{
