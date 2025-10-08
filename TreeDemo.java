@@ -187,6 +187,152 @@ class BinarySearchTree{
       }
       return root;  
    }
+
+/**
+     * This method creates a string representing the binary tree in a pyramid form.
+     * This is a copy and paste from an old project, and is also very lazily made,
+     * inefficient, and I would love to remake it if I have time.
+     * @return A string representing the binary tree in a pyramid format.
+     */
+    public String toTreeString() {
+
+        // Creating a two dimensional array list to represent the binary tree.
+        // I know this is extremely inefficient but I need to find the height of the
+        // tree anyways and I don't have a better idea.
+
+        ArrayList<ArrayList<Node>> tree = new ArrayList<ArrayList<Node>>();
+        tree.add(new ArrayList<Node>());
+        tree.get(0).add(root);
+
+        int currentLevel;
+        ArrayList<Node> thisLevel;
+
+        int nextLevel = 0;
+        ArrayList<Node> otherLevel;
+
+        int currentIndex = 0;
+        Node currentNode;
+
+        boolean valid = true;
+
+        while (valid) {
+
+            valid = false;
+
+            currentLevel = nextLevel;
+            thisLevel = tree.get(currentLevel);
+
+            tree.add(new ArrayList<Node>());
+            nextLevel++;
+            otherLevel = tree.get(nextLevel);
+
+            currentIndex = 0;
+
+            for (; currentIndex < thisLevel.size(); currentIndex++) {
+
+                currentNode = thisLevel.get(currentIndex);
+
+                if (currentNode == null) {
+
+                    otherLevel.add(null);
+                    otherLevel.add(null);
+
+                } else {
+
+                    otherLevel.add(currentNode.left);
+                    otherLevel.add(currentNode.right);
+
+                    if (currentNode.left != null || currentNode.right != null)
+                        valid = true;
+
+                }
+
+            }
+
+        }
+
+        tree.remove(tree.size() - 1);
+
+        // Calculating the amount of spaces needed in between each number on each level.
+
+        int[] distance = new int[tree.size()];
+        distance[0] = 1;
+        int prevDif = 2;
+
+        for (int i = 1; i < distance.length; i++) {
+            distance[i] = distance[i - 1] + (prevDif * 2);
+            prevDif = distance[i] - distance[i - 1];
+        }
+
+        // Building the final string.
+
+        String alpha = "";
+
+        for (int o = 0; o < tree.size(); o++) {
+            if (alpha.length() != 0)
+                alpha += "\n";
+            alpha += spaces((distance[distance.length - o - 1]) / 2);
+            for (int i = 0; i < tree.get(o).size(); i++) {
+                alpha += nodeTo3Char(tree.get(o).get(i));
+                alpha += spaces(distance[distance.length - o - 1]);
+            }
+        }
+
+        return alpha;
+
+    }
+
+    /**
+     * A helper method for the toTreeString() method that will return
+     * a string of spaces of the given length.
+     * @param amount The desired length of the output string.
+     * @return A string made entirely of spaces of the given length.
+     */
+    private String spaces(int amount) {
+        String alpha = "";
+        for (int i = 0; i < amount; i++) {
+            alpha += " ";
+        }
+        return alpha;
+    }
+    
+    /**
+     * A helper method for the toTreeString() method that when given a node,
+     * returns a string containing the value of the node that is exactly three
+     * characters long.
+     * Uses the "spacer" variable to fill the empty space around a number.
+     * @param node The number being converted into a string.
+     * @return A string representing the given number as a 3 character long string.
+     */
+    private String nodeTo3Char(Node node) {
+        String gama = "";
+        int num;
+        if (node == null)
+            num = -1;
+        else
+            num = node.value;
+        if (num > -1 && num < 10) {
+            gama += spacer;
+            gama += num;
+            gama += spacer;
+        } else if (num > 9 && num < 100) {
+            gama += spacer;
+            gama += num;
+        } else if (num > 99 && num < 1000) {
+            gama += num;
+        } else {
+            gama += spacer;
+            gama += spacer;
+            gama += spacer;
+        }
+        return gama;
+    }
+
+    /**
+     * This character is used to clean up the output of the toTreeString()
+     * method by making it clear how much space each number takes up.
+     */
+    private static final char spacer = '.';
    
    
    
