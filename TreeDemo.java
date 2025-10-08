@@ -342,7 +342,6 @@ class BinarySearchTree{
 
 public class TreeDemo{
    public static void main(String[] args){
-
         BinarySearchTree t1  = new BinarySearchTree();
         t1.insert(t1.root, 24);
         t1.insert(t1.root, 80);
@@ -369,14 +368,18 @@ public class TreeDemo{
         System.out.print("largest node : " + t1.getMax(t1.root));
         System.out.println();
 
-        t1.delete(t1.root, 22);
-        System.out.print("in-order after deleting 22 :   ");
-        t1.inOrderTraversal(t1.root);
+        System.out.println("tree string : ");
+        System.out.println(t1.toTreeString());
+        System.out.println();
+
+        t1.delete(t1.root, 18);
+        System.out.println("after deleting 18 :   ");
+        System.out.println(t1.toTreeString());
         System.out.println();
 
         t1.delete(t1.root, 90);
-        System.out.print("in-order after deleting 90 :   ");
-        t1.inOrderTraversal(t1.root);
+        System.out.println("after deleting 90 :   ");
+        System.out.println(t1.toTreeString());
         System.out.println();
     }
 }
