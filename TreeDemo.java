@@ -189,61 +189,138 @@ class BinarySearchTree{
    }
 
 /**
+     * This method will traverse the entire binary tree to find its height.
+     *
+     * @return The height of the binary tree, with an empty tree having a height of 0.
+     */
+    public int height() {
+
+        if (root == null)
+            return 0;
+
+        LinkedList<Node> queue = new LinkedList<>();
+        queue.add(root);
+
+        Node currentNode;
+        int lengthOfCurrentLevel;
+        int totalHeight = 0;
+
+        while (!queue.isEmpty()) {
+
+            totalHeight++;
+
+            lengthOfCurrentLevel = queue.size();
+
+            for (int i = 0; i < lengthOfCurrentLevel; i++) {
+
+                currentNode = queue.removeFirst();
+
+                if (currentNode.left != null)
+                    queue.add(currentNode.left);
+
+                if (currentNode.right != null)
+                    queue.add(currentNode.right);
+
+            }
+
+        }
+
+        return totalHeight;
+
+    }
+
+    /**
      * This method creates a string representing the binary tree in a pyramid form.
-     * This is a copy and paste from an old project, and is also very lazily made,
-     * inefficient, and I would love to remake it if I have time.
+     * This is the remade, better version.
+     *
      * @return A string representing the binary tree in a pyramid format.
      */
     public String toTreeString() {
 
-        // Creating a two dimensional array list to represent the binary tree.
-        // I know this is extremely inefficient but I need to find the height of the
-        // tree anyways and I don't have a better idea.
+        if (root == null)
+            return "No Tree";
 
-        ArrayList<ArrayList<Node>> tree = new ArrayList<ArrayList<Node>>();
-        tree.add(new ArrayList<Node>());
-        tree.get(0).add(root);
+        int height = this.height();
 
-        int currentLevel;
-        ArrayList<Node> thisLevel;
+        /*
+        This codes calculates the amount of spaces needed in between each number on each level of the tree
+        and stores it in distances[].
+        For example, distances[0] represents the amount of empty spaces that need to exist between each node
+        at the very bottom of the tree, which is 1 space.
+        Meanwhile, distances[1] will be the amount of spaces in between each node on the second level from
+        the bottom, which is 5 spaces.
+         */
 
-        int nextLevel = 0;
-        ArrayList<Node> otherLevel;
+        int[] distances = new int[height];
+        distances[0] = 1;
+        int prevDif = 2;
 
-        int currentIndex = 0;
+        for (int i = 1; i < distances.length; i++) {
+            distances[i] = distances[i - 1] + (prevDif * 2);
+            prevDif = distances[i] - distances[i - 1];
+        }
+
+        /*
+        Here we start building the string.
+        The process used is very similar to the one in the height method.
+        We add all nodes to a queue, and level by level, we add each node's
+        value to the string as well as adding empty spaces to keep everything
+        orderly.
+         */
+
+        LinkedList<Node> queue = new LinkedList<>();
+        queue.add(root);
+
         Node currentNode;
+        int lengthOfCurrentLevel;
 
-        boolean valid = true;
+        StringBuilder alpha = new StringBuilder();
 
-        while (valid) {
+        for (int currentLevel = 0; currentLevel < height; currentLevel++) {
 
-            valid = false;
+            // We don't want to start the string with a \n, but we want to add one every other level.
+            if (!alpha.isEmpty())
+                alpha.append("\n");
 
-            currentLevel = nextLevel;
-            thisLevel = tree.get(currentLevel);
+            // The node closest to the left side of the screen only needs half the offset.
+            alpha.append(spaces((distances[distances.length - currentLevel - 1]) / 2));
 
-            tree.add(new ArrayList<Node>());
-            nextLevel++;
-            otherLevel = tree.get(nextLevel);
+            lengthOfCurrentLevel = queue.size();
 
-            currentIndex = 0;
+            for (int i = 0; i < lengthOfCurrentLevel; i++) {
 
-            for (; currentIndex < thisLevel.size(); currentIndex++) {
+                currentNode = queue.removeFirst();
 
-                currentNode = thisLevel.get(currentIndex);
+                if (currentNode != null) {
 
-                if (currentNode == null) {
+                    /*
+                    If are on a valid node, we add the value of the node to the pyramid and
+                    some empty space after.
+                    The amount of empty spaces was calculated earlier in the distances array.
+                    We use the spaces() helper method to convert the number in the distances
+                    array into a usable string we can append.
+                     */
+                    alpha.append(intTo3Char(currentNode.value));
+                    alpha.append(spaces(distances[distances.length - currentLevel - 1]));
 
-                    otherLevel.add(null);
-                    otherLevel.add(null);
+                    // We add the currents node's children to the queue, weather or not they are null.
+                    queue.add(currentNode.left);
+                    queue.add(currentNode.right);
 
-                } else {
+                }
 
-                    otherLevel.add(currentNode.left);
-                    otherLevel.add(currentNode.right);
+                else {
 
-                    if (currentNode.left != null || currentNode.right != null)
-                        valid = true;
+                    /*
+                    If the node we are on is null, we still have to add some spacers
+                    to maintain the pyramid shape.
+                    Then we add the normal amount of spaces that appear in between nodes
+                    and add more nulls to the queue.
+                     */
+                    alpha.append(intTo3Char(-1));
+                    alpha.append(spaces(distances[distances.length - currentLevel - 1]));
+                    queue.add(null);
+                    queue.add(null);
 
                 }
 
@@ -251,89 +328,57 @@ class BinarySearchTree{
 
         }
 
-        tree.remove(tree.size() - 1);
-
-        // Calculating the amount of spaces needed in between each number on each level.
-
-        int[] distance = new int[tree.size()];
-        distance[0] = 1;
-        int prevDif = 2;
-
-        for (int i = 1; i < distance.length; i++) {
-            distance[i] = distance[i - 1] + (prevDif * 2);
-            prevDif = distance[i] - distance[i - 1];
-        }
-
-        // Building the final string.
-
-        String alpha = "";
-
-        for (int o = 0; o < tree.size(); o++) {
-            if (alpha.length() != 0)
-                alpha += "\n";
-            alpha += spaces((distance[distance.length - o - 1]) / 2);
-            for (int i = 0; i < tree.get(o).size(); i++) {
-                alpha += nodeTo3Char(tree.get(o).get(i));
-                alpha += spaces(distance[distance.length - o - 1]);
-            }
-        }
-
-        return alpha;
+        return alpha.toString();
 
     }
 
     /**
-     * A helper method for the toTreeString() method that will return
-     * a string of spaces of the given length.
+     * A helper method for the toTreeString() method that when given a length,
+     * will build a string made entirely of spaces that is the desired length.
      * @param amount The desired length of the output string.
      * @return A string made entirely of spaces of the given length.
      */
     private String spaces(int amount) {
-        String alpha = "";
+        StringBuilder beta = new StringBuilder();
         for (int i = 0; i < amount; i++) {
-            alpha += " ";
+            beta.append(" ");
         }
-        return alpha;
+        return beta.toString();
     }
-    
+
     /**
-     * A helper method for the toTreeString() method that when given a node,
-     * returns a string containing the value of the node that is exactly three
-     * characters long.
+     * A helper method for the toTreeString() method that when given an integer,
+     * returns a string containing the integer and is exactly three characters long.
      * Uses the "spacer" variable to fill the empty space around a number.
-     * @param node The number being converted into a string.
+     * This method can not handle negative numbers or numbers bigger than 999.
+     *
+     * @param num The number being converted into a string. Must be between 0 and 999 inclusive.
      * @return A string representing the given number as a 3 character long string.
      */
-    private String nodeTo3Char(Node node) {
-        String gama = "";
-        int num;
-        if (node == null)
-            num = -1;
-        else
-            num = node.value;
+    private String intTo3Char(int num) {
+        StringBuilder gama = new StringBuilder();
         if (num > -1 && num < 10) {
-            gama += spacer;
-            gama += num;
-            gama += spacer;
+            gama.append(spacer);
+            gama.append(num);
+            gama.append(spacer);
         } else if (num > 9 && num < 100) {
-            gama += spacer;
-            gama += num;
+            gama.append(spacer);
+            gama.append(num);
         } else if (num > 99 && num < 1000) {
-            gama += num;
+            gama.append(num);
         } else {
-            gama += spacer;
-            gama += spacer;
-            gama += spacer;
+            gama.append(spacer);
+            gama.append(spacer);
+            gama.append(spacer);
         }
-        return gama;
+        return gama.toString();
     }
 
     /**
      * This character is used to clean up the output of the toTreeString()
      * method by making it clear how much space each number takes up.
      */
-    private static final char spacer = '.';
-   
+    private static final char spacer = '.';   
    
    
 }
